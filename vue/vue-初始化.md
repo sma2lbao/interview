@@ -30,11 +30,12 @@
         3. 挂载创建节点API _c = $createElement = (a, b, c, d) => createElement(vm, a, b, c, d, true)
         4. 利用defineReactive为$attrs和$listeners建立响应性对象
     6. callHook - beforeCreate
-        1. pushTarget
-        2. popTarget
+        begin. pushTarget
+        1.  hook:开头 会执行$emit('hook')
+        end. popTarget
     7. initInjections
     8. initState
-        1. vm._watchers 
+        1. vm._watchers 存放watcher 实例
         2. initProps
         3. initMethods
             1. 将methods的方法bind到vm上
@@ -58,7 +59,10 @@
                                         1. dep = new Dep()
                                         2. defineProperty劫持
         5. initComputed
+            1. 赋值给_computedWatchers
+            2. 将对应的propert劫持到vm实例上
         6. initWatch
+            1. createWatcher
     9. initProvide
     10. callHook - created
 
@@ -68,6 +72,10 @@
             2. mountComponent
                 1. callHook - beforeMount
                 2. 初始化updateComponent
+                    1. 调用实例vm._update(vm._render(), hydrating)
+                    2. vm._update调用在lifecycleMixin初始化时声明
+                    3. 执行__patch__函数
+                    4.
                 3. 实例化 new Watcher
                     ```
                     new Watcher(vm, updateComponent, noop, {
